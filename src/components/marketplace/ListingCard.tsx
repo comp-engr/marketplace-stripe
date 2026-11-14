@@ -5,12 +5,18 @@ import { formatPrice } from "@/lib/format";
 import type { ListingSummary } from "@/types";
 
 export function ListingCard({ listing, priority = false }: { listing: ListingSummary; priority?: boolean }) {
+  const sold = listing.status === "sold";
   return (
     <Link
       href={`/item/${listing.id}`}
-      className="group block rounded-lg p-1 transition-colors hover:bg-black/[0.04] focus-visible:ring-2 focus-visible:ring-fb-blue focus-visible:outline-none"
+      className={`group block rounded-lg p-1 transition-colors hover:bg-black/[0.04] focus-visible:ring-2 focus-visible:ring-fb-blue focus-visible:outline-none ${sold ? "opacity-70 hover:opacity-100" : ""}`}
     >
       <div className="relative aspect-square overflow-hidden rounded-lg border border-black/5 bg-[#e4e6eb]">
+        {sold && (
+          <span className="absolute top-2 left-2 z-10 rounded-md bg-red-600 px-2 py-0.5 text-xs font-bold tracking-wide text-white uppercase shadow">
+            Sold
+          </span>
+        )}
         {listing.image_url ? (
           <Image
             src={listing.image_url}

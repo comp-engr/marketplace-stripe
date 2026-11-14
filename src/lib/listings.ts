@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { isUuid } from "@/lib/validation";
 import type { Listing, ListingSummary } from "@/types";
 
-const SUMMARY_COLUMNS = "id, title, price, location, image_url, created_at";
+const SUMMARY_COLUMNS = "id, title, price, location, image_url, created_at, status";
 
 /**
  * Strip characters that have meaning in PostgREST filter syntax
@@ -23,6 +23,8 @@ export async function getListings(
   let query = supabase
     .from("listings")
     .select(SUMMARY_COLUMNS)
+    // 'available' sorts before 'sold', then newest first
+    .order("status", { ascending: true })
     .order("created_at", { ascending: false })
     .limit(200);
 
